@@ -4,9 +4,13 @@ from .models import HomeSlider, Category, Product
 def home_page(request):
     photos = HomeSlider.objects.all()
     categories = Category.objects.all()
+
+    all_products = Product.objects.all()
+
     context = {
         'photos': photos,
         'categories': categories,
+        'recently_added_products': all_products.order_by('-id')[:4]
     }
     return render(request, 'main/index.html', context)
 

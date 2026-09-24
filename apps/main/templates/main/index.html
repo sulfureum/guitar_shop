@@ -6,6 +6,7 @@ Guitar Store - Main
 
 {% block content %}
 <div class="container">
+    <!-- Carousel Section -->
     <section class="my-4">
         <div id="carouselExampleFade" class="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden">
             <div class="carousel-inner">
@@ -17,6 +18,16 @@ Guitar Store - Main
                         <h1 class="display-4 fw-bold text-uppercase">Your ideal sound</h1>
                         <p class="fs-5 text-light">Guitar legends, amps and accessories with pre-sale setup.</p>
                         <a href="{% url 'shop' %}" class="btn btn-warning btn-lg fw-semibold rounded-pill px-4 shadow">See Catalog</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="carousel-item active">
+                    <div class="bg-dark text-white d-flex align-items-center justify-content-center" style="height: 480px;">
+                        <div class="text-center">
+                            <h1 class="display-4 fw-bold text-uppercase">Your ideal sound</h1>
+                            <p class="fs-5">Guitar legends, amps and accessories with pre-sale setup.</p>
+                            <a href="{% url 'shop' %}" class="btn btn-warning btn-lg fw-semibold rounded-pill px-4 shadow">See Catalog</a>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -33,22 +44,22 @@ Guitar Store - Main
         </div>
     </section>
 
+    <!-- New Arrivals Section -->
     <section class="my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold m-0">New arrivals</h2>
-                <small class="text-muted">Latest guitars in our collection</small>
+                <small class="text-muted">Latest items in our collection</small>
             </div>
             <a href="{% url 'shop' %}" class="btn btn-outline-dark rounded-pill px-4">See more</a>
         </div>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
-            {% for product in products %}
+            {% for product in recently_added_products %}
                 <div class="col">
-                    {% include 'components/_card.html' %}
+                    {% include 'components/_card.html' with product=product %}
                 </div>
             {% empty %}
-                <!-- Красивая одиночная плашка, если товаров пока нет -->
                 <div class="col-12">
                     <div class="p-5 text-center bg-body-tertiary rounded-4 border shadow-sm my-3">
                         <h4 class="fw-bold text-dark mb-2">New guitars coming soon!</h4>
@@ -59,6 +70,7 @@ Guitar Store - Main
         </div>
     </section>
 
+    <!-- Features Section -->
     <section class="my-5 py-4 border-top">
         <div class="row text-center g-4">
             <div class="col-md-4">
