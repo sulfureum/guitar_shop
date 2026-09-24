@@ -18,17 +18,18 @@
           <a class="nav-link px-3 fw-medium" href="{% url 'about' %}">About us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3 fw-medium" href="#">Contact Us</a>
+          <a class="nav-link px-3 fw-medium" href="{% url 'contact' %}">Contact Us</a>
         </li>
       </ul>
 
-      <form class="d-flex position-relative" role="search" action="#" method="get" style="max-width: 300px; width: 100%;">
-        <input class="form-control bg-secondary bg-opacity-25 text-white border-secondary rounded-pill px-3 pe-5"
+      <form class="d-flex position-relative" role="search" action="{% url 'search' %}" method="get" style="max-width: 300px; width: 100%;">
+        <input class="form-control text-white border-secondary rounded-pill px-3 pe-5"
                type="search"
                name="q"
+               value="{{ request.GET.q|default:'' }}"
                placeholder="Guitar Search..."
                aria-label="Search"
-               style="font-size: 0.9rem;">
+               style="font-size: 0.9rem; background-color: rgba(255, 255, 255, 0.15); color: #fff !important;">
         <button class="btn text-warning position-absolute end-0 top-50 translate-middle-y me-1 border-0" type="submit">
           <i class="bi bi-search"></i>
         </button>

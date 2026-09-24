@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Contact Us
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="bg-light p-5 rounded-4 shadow-sm">
+                <h2 class="fw-bold mb-2">Get in Touch 📩</h2>
+                <p class="text-muted mb-4">Have questions about a guitar or need advice? Send us a message!</p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success rounded-3 mb-4">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">First Name</label>
+                            <input type="text" name="first_name" class="form-control rounded-3 p-3 border-0 shadow-sm" placeholder="John" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Last Name</label>
+                            <input type="text" name="lastname" class="form-control rounded-3 p-3 border-0 shadow-sm" placeholder="Doe">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Email Address</label>
+                        <input type="email" name="email" class="form-control rounded-3 p-3 border-0 shadow-sm" placeholder="name@example.com" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Message</label>
+                        <textarea name="message" class="form-control rounded-3 p-3 border-0 shadow-sm" rows="4" placeholder="How can we help you?..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark btn-lg rounded-pill px-5 shadow-sm">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

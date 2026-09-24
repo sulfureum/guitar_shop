@@ -53,3 +53,20 @@ class HomeSlider(models.Model):
         verbose_name = 'Slider Photo'
         verbose_name_plural = 'Slider Photos'
 
+
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments', verbose_name='Product')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name='Author')
+    text = models.TextField(verbose_name='Comment text')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Date created')
+
+    def __str__(self):
+        return f'{self.user.username} - {self.product.name}'
+
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+
+
+
+

@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .models import HomeSlider, Category, Product
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import HomeSlider, Category, Product, Comment, ContactRequest
+from django.contrib import messages
+from django.db.models import Q
 
 def home_page(request):
     photos = HomeSlider.objects.all()
@@ -37,6 +39,64 @@ def about_page(request):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, 'main/product_detail.html', {'product': product})
+
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            text = request.POST.get('text')
+            if text:
+                Comment.objects.create(
+                    product=product,
+                    user=request.user,
+                    text=text
+                )
+                return redirect('product_detail', pk=pk)
+        else:
+            return redirect('login')
+
+    comments = product.comments.all().order_by('-id')
+
+    context = {
+        'product': product,
+        'comments': comments,
+    }
+    return render(request, 'main/product_detail.html', context)
+
+def contact(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        lastname = request.POST.get('lastname')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        if first_name and email and message:
+            ContactRequest.objects.create(
+                first_name=first_name,
+                lastname=lastname,
+                email=email,
+                message=message
+            )
+            messages.success(request, 'Your message has been sent successfully!')
+            return redirect('contact')
+
+    return render(request, 'main/contact.html')
+
+
+def search(request):
+    query = request.GET.get('q')
+    categories = Category.objects.all()
+    products = Product.objects.all()
+
+    if query:
+        # Ищем по name и description (так как в твоем Product используется name, а не title)
+        products = products.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+
+    context = {
+        'categories': categories,
+        'products': products,
+        'query': query,
+    }
+    return render(request, 'main/shop.html', context)
 
 

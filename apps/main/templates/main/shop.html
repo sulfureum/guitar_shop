@@ -9,8 +9,10 @@ Shopping Page
     <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
         <div>
             <h2 class="fw-bold m-0 text-uppercase">
-                {% if selected_category %}
-                    {{ selected_category.name}}
+                {% if query %}
+                    Search Results
+                {% elif selected_category %}
+                    {{ selected_category.name }}
                 {% else %}
                     All products
                 {% endif %}
@@ -20,6 +22,18 @@ Shopping Page
             </small>
         </div>
     </div>
+
+    {% if query %}
+    <div class="alert alert-light border rounded-4 shadow-sm mb-4 d-flex justify-content-between align-items-center p-3">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-search text-warning fs-5"></i>
+            <span>Results for query: <strong class="text-dark">"{{ query }}"</strong></span>
+        </div>
+        <a href="{% url 'shop' %}" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+            Reset search
+        </a>
+    </div>
+    {% endif %}
 
     <div class="row g-4">
         <div class="col-lg-3">
@@ -91,8 +105,13 @@ Shopping Page
                 <div class="col-12">
                     <div class="p-5 text-center bg-body-tertiary rounded-4 border shadow-sm my-3">
                         <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
-                        <h4 class="fw-bold text-dark mb-2">This category hasn't been updated yet.</h4>
-                        <p class="text-muted mb-3">Try choosing another category or</p>
+                        {% if query %}
+                            <h4 class="fw-bold text-dark mb-2">No guitars found matching "{{ query }}"</h4>
+                            <p class="text-muted mb-3">Try checking for spelling errors or search for another model.</p>
+                        {% else %}
+                            <h4 class="fw-bold text-dark mb-2">This category hasn't been updated yet.</h4>
+                            <p class="text-muted mb-3">Try choosing another category or</p>
+                        {% endif %}
                         <a href="{% url 'shop' %}" class="btn btn-outline-dark rounded-pill px-4">Reset filter</a>
                     </div>
                 </div>
