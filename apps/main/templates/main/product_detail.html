@@ -30,13 +30,27 @@
                 </div>
             {% endif %}
 
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <h1 class="fw-bold display-5 m-0">{{ product.name }}</h1>
+            <div class="d-flex align-items-start justify-content-between mb-3 gap-2">
+                <h1 class="fw-bold fs-2 m-0 text-break">{{ product.name }}</h1>
 
                 {% if user.is_authenticated %}
-                    <a href="{% url 'toggle_favorite' product.id %}" class="btn btn-outline-danger rounded-circle p-2 px-3 shadow-sm" title="Add to Wishlist">
-                        ❤️
-                    </a>
+                    <div class="flex-shrink-0">
+                        {% if is_favorite %}
+                            <a href="{% url 'toggle_favorite' product.id %}"
+                               class="btn btn-danger btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                               style="width: 42px; height: 42px;"
+                               title="Remove from Wishlist">
+                                ❤️
+                            </a>
+                        {% else %}
+                            <a href="{% url 'toggle_favorite' product.id %}"
+                               class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border"
+                               style="width: 42px; height: 42px;"
+                               title="Add to Wishlist">
+                                🤍
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endif %}
             </div>
 
@@ -47,10 +61,38 @@
             <h5 class="fw-bold mt-2">Description</h5>
             <p class="text-muted leading-relaxed mb-4">{{ product.description }}</p>
 
-            <div>
-                <button class="btn btn-dark btn-lg rounded-pill px-5 shadow-sm">
-                    Add to Cart
-                </button>
+            <div class="d-flex align-items-center gap-3">
+                {% if user.is_authenticated %}
+                    {% if cart_item %}
+                        <div class="d-flex align-items-center bg-light rounded-pill p-1 border shadow-sm">
+                            <a href="{% url 'update_cart_quantity' cart_item.id 'decrease' %}"
+                               class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center p-0"
+                               style="width: 38px; height: 38px; text-decoration: none;">
+                                −
+                            </a>
+
+                            <span class="fw-bold px-3 fs-5">{{ cart_item.quantity }}</span>
+
+                            <a href="{% url 'update_cart_quantity' cart_item.id 'increase' %}"
+                               class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-0"
+                               style="width: 38px; height: 38px; text-decoration: none;">
+                                +
+                            </a>
+                        </div>
+
+                        <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark btn-lg rounded-pill px-4 shadow-sm">
+                            Go to Cart 🛒
+                        </a>
+                    {% else %}
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-dark btn-lg rounded-pill px-5 shadow-sm">
+                            Add to Cart 🛒
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'users:home' %}" class="btn btn-dark btn-lg rounded-pill px-5 shadow-sm">
+                        Log in to Buy 🛒
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -82,5 +82,15 @@ class Favorite(models.Model):
         return f"{self.user.username} — {self.product.name}"
 
 
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items', verbose_name='user')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='product')
+    quantity = models.PositiveIntegerField(default=1, verbose_name='quantity')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='date of creation')
 
+    def total_price(self):
+        clean_price = str(self.product.price).replace(',', '').replace('$', '').strip()
+        return round(float(clean_price) * self.quantity, 2)
 
+    def __str__(self):
+        return f"{self.product.name} ({self.quantity})"
