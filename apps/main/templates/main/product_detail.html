@@ -33,25 +33,25 @@
             <div class="d-flex align-items-start justify-content-between mb-3 gap-2">
                 <h1 class="fw-bold fs-2 m-0 text-break">{{ product.name }}</h1>
 
-                {% if user.is_authenticated %}
-                    <div class="flex-shrink-0">
-                        {% if is_favorite %}
-                            <a href="{% url 'toggle_favorite' product.id %}"
-                               class="btn btn-danger btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
-                               style="width: 42px; height: 42px;"
-                               title="Remove from Wishlist">
-                                ❤️
-                            </a>
-                        {% else %}
-                            <a href="{% url 'toggle_favorite' product.id %}"
-                               class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border"
-                               style="width: 42px; height: 42px;"
-                               title="Add to Wishlist">
-                                🤍
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endif %}
+            {% if user.is_authenticated %}
+                <div class="flex-shrink-0">
+                    {% if is_favorite %}
+                        <a href="{% url 'toggle_favorite' product.id %}"
+                           class="btn btn-danger btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                           style="width: 42px; height: 42px;"
+                           title="Remove from Wishlist">
+                            ❤️
+                        </a>
+                    {% else %}
+                        <a href="{% url 'toggle_favorite' product.id %}"
+                           class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border"
+                           style="width: 42px; height: 42px;"
+                           title="Add to Wishlist">
+                            🤍
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
             </div>
 
             <h2 class="text-dark fw-bold mb-4">${{ product.price }}</h2>

@@ -55,8 +55,11 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
     cart_item = None
+    is_favorite = False
+
     if request.user.is_authenticated:
         cart_item = CartItem.objects.filter(user=request.user, product=product).first()
+        is_favorite = Favorite.objects.filter(user=request.user, product=product).exists()
 
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -77,9 +80,9 @@ def product_detail(request, pk):
         'product': product,
         'comments': comments,
         'cart_item': cart_item,
+        'is_favorite': is_favorite,
     }
     return render(request, 'main/product_detail.html', context)
-
 
 def contact(request):
     if request.method == 'POST':
