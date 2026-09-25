@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sign up
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center my-5">Sign up</h1>
+    {% include './components/_form.html' %}
+    <div class="text-center mt-3">
+        <small class="text-muted">Have got an account? <a href="{% url 'users:home' %}" class="text-warning fw-bold">Log in</a></small>
+    </div>
+</div>
+{% endblock %}

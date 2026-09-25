@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import HomeSlider, Category, Product, Comment, ContactRequest
+from .models import HomeSlider, Category, Product, Comment, ContactRequest, Favorite
 from django.contrib import messages
 from django.db.models import Q
 
@@ -98,5 +98,32 @@ def search(request):
         'query': query,
     }
     return render(request, 'main/shop.html', context)
+
+
+def toggle_favorite(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect('users:home')
+
+    product = Product.objects.get(id=product_id)
+    favorite = Favorite.objects.filter(user=request.user, product=product).first()
+
+    if favorite:
+        favorite.delete()
+    else:
+        Favorite.objects.create(user=request.user, product=product)
+
+    return redirect('favorites_list')
+
+
+def favorites_list(request):
+    if not request.user.is_authenticated:
+        return redirect('users:login')
+
+    favorites = Favorite.objects.filter(user=request.user)
+
+    ctx = {
+        'favorites': favorites
+    }
+    return render(request, 'main/favorites.html', ctx)
 
 

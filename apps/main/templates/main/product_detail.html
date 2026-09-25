@@ -30,7 +30,16 @@
                 </div>
             {% endif %}
 
-            <h1 class="fw-bold display-5 mb-3">{{ product.name }}</h1>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h1 class="fw-bold display-5 m-0">{{ product.name }}</h1>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'toggle_favorite' product.id %}" class="btn btn-outline-danger rounded-circle p-2 px-3 shadow-sm" title="Add to Wishlist">
+                        ❤️
+                    </a>
+                {% endif %}
+            </div>
+
             <h2 class="text-dark fw-bold mb-4">${{ product.price }}</h2>
 
             <hr class="my-3">
@@ -63,7 +72,7 @@
             </form>
         {% else %}
             <div class="alert alert-secondary rounded-4 mb-4 p-4 shadow-sm">
-                Please <a href="{% url 'login' %}" class="alert-link fw-bold">log in</a> to leave a comment.
+                Please <a href="{% url 'users:home' %}" class="alert-link fw-bold">log in</a> to leave a comment.
             </div>
         {% endif %}
 
